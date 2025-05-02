@@ -21,33 +21,21 @@ namespace Emovere.Infrastructure.Bus
 
         public IAdvancedBus AdvancedBus => _bus.Advanced;
 
-        public void Publish<T>(T message) where T : IntegrationEvent
-            => TryConnect().PubSub.Publish(message);
+        public async Task PublishAsync<T>(T message, CancellationToken cancellationToken = default)
+            where T : IntegrationEvent
+            => await TryConnect().PubSub.PublishAsync(message, cancellationToken);
 
-        public async Task PublishAsync<T>(T message) where T : IntegrationEvent 
-            => await TryConnect().PubSub.PublishAsync(message);
+        public async Task SubscribeAsync<T>(string subscriptionId, Func<T, Task> onMessage, CancellationToken cancellationToken = default)
+            where T : class
+            => await TryConnect().PubSub.SubscribeAsync(subscriptionId, onMessage, cancellationToken);
 
-        public void Subscribe<T>(string subscriptionId, Action<T> onMessage) where T : class 
-            => TryConnect().PubSub.Subscribe(subscriptionId, onMessage);
-
-        public void SubscribeAsync<T>(string subscriptionId, Func<T, Task> onMessage) where T : class
-            => TryConnect().PubSub.SubscribeAsync(subscriptionId, onMessage);
-
-        public TResponse Request<TRequest, TResponse>(TRequest request) where TRequest : IntegrationEvent
-            where TResponse : class
-            => TryConnect().Rpc.Request<TRequest, TResponse>(request);
-
-        public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request)
-            where TRequest : IntegrationEvent where TResponse : class 
-            => await TryConnect().Rpc.RequestAsync<TRequest, TResponse>(request);
-
-        public IDisposable Respond<TRequest, TResponse>(Func<TRequest, TResponse> responder)
+        public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
             where TRequest : IntegrationEvent where TResponse : class
-            => TryConnect().Rpc.Respond(responder);
+            => await TryConnect().Rpc.RequestAsync<TRequest, TResponse>(request, cancellationToken);
 
-        public IDisposable RespondAsync<TRequest, TResponse>(Func<TRequest, Task<TResponse>> responder)
-            where TRequest : IntegrationEvent where TResponse : class 
-            => TryConnect().Rpc.RespondAsync(responder).GetAwaiter().GetResult();
+        public IDisposable RespondAsync<TRequest, TResponse>(Func<TRequest, Task<TResponse>> responder, CancellationToken cancellationToken = default)
+            where TRequest : IntegrationEvent where TResponse : class
+            => TryConnect().Rpc.RespondAsync(responder, cancellationToken).GetAwaiter().GetResult();
 
         private IBus TryConnect()
         {
@@ -57,7 +45,8 @@ namespace Emovere.Infrastructure.Bus
                 .Or<BrokerUnreachableException>()
                 .WaitAndRetry(3, retry => TimeSpan.FromSeconds(Math.Pow(2, retry)));
 
-            policy.Execute(() => {
+            policy.Execute(() =>
+            {
                 _bus = RabbitHutch.CreateBus(_connectionString);
                 _advancedBus = _bus.Advanced;
                 _advancedBus.Disconnected += OnDisconnect!;
@@ -75,6 +64,10 @@ namespace Emovere.Infrastructure.Bus
             policy.Execute(TryConnect);
         }
 
-        public void Dispose() => _bus?.Dispose();
+        public void Dispose()
+        {
+            _bus?.Dispose();
+            _advancedBus?.Dispose();
+        }
     }
 }
