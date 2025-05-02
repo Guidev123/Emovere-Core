@@ -6,6 +6,8 @@
 
         List<Notification> GetNotifications();
 
+        void ClearNotifications();
+
         void HandleNotification(Notification notification);
     }
 }

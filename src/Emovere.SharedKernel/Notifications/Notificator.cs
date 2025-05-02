@@ -4,6 +4,8 @@
     {
         private readonly List<Notification> _notifications = [];
 
+        public void ClearNotifications() => _notifications.Clear();
+
         public List<Notification> GetNotifications() => _notifications;
 
         public void HandleNotification(Notification notification) => _notifications.Add(notification);
