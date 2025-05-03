@@ -2,16 +2,13 @@
 
 namespace Emovere.SharedKernel.Events
 {
-    public abstract record Event : INotification
+    public abstract record Event : Message, INotification
     {
         protected Event()
         {
-            MessageType = GetType().Name;
             Timestamp = DateTime.UtcNow;
         }
 
-        public Guid AggregateId { get; protected set; }
         public DateTime Timestamp { get; }
-        public string MessageType { get; }
     }
 }

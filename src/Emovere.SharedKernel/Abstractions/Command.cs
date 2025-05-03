@@ -1,9 +1,10 @@
-﻿using Emovere.SharedKernel.Responses;
+﻿using Emovere.SharedKernel.Events;
+using Emovere.SharedKernel.Responses;
 using MidR.Interfaces;
 
 namespace Emovere.SharedKernel.Abstractions
 {
-    public abstract record Command<T> : IRequest<Response<T>>
+    public abstract record Command<T> : Message, IRequest<Response<T>>
     {
         protected Command()
         {
