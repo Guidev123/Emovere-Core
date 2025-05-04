@@ -22,7 +22,7 @@ namespace Emovere.Infrastructure.Bus
         public IAdvancedBus AdvancedBus => _bus.Advanced;
 
         public async Task PublishAsync<T>(T message, CancellationToken cancellationToken = default)
-            where T : IntegrationEvent
+            where T : Event
             => await TryConnect().PubSub.PublishAsync(message, cancellationToken);
 
         public async Task SubscribeAsync<T>(string subscriptionId, Func<T, Task> onMessage, CancellationToken cancellationToken = default)
@@ -30,11 +30,11 @@ namespace Emovere.Infrastructure.Bus
             => await TryConnect().PubSub.SubscribeAsync(subscriptionId, onMessage, cancellationToken);
 
         public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
-            where TRequest : IntegrationEvent where TResponse : class
+            where TRequest : Event where TResponse : class
             => await TryConnect().Rpc.RequestAsync<TRequest, TResponse>(request, cancellationToken);
 
         public IDisposable RespondAsync<TRequest, TResponse>(Func<TRequest, Task<TResponse>> responder, CancellationToken cancellationToken = default)
-            where TRequest : IntegrationEvent where TResponse : class
+            where TRequest : Event where TResponse : class
             => TryConnect().Rpc.RespondAsync(responder, cancellationToken).GetAwaiter().GetResult();
 
         private IBus TryConnect()
