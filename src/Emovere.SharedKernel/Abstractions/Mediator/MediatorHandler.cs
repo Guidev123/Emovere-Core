@@ -16,6 +16,7 @@ namespace Emovere.SharedKernel.Abstractions.Mediator
             if (!@event.GetType().BaseType!.Name.Equals(nameof(DomainEvent)))
                 await eventSourcingRepository.SaveAsync(@event);
         }
+
         public async Task<Response<T>> SendCommand<T>(Command<T> command) => await mediator.DispatchAsync(command);
 
         public async Task<Response<T>> SendQuery<T>(IQuery<T> query) => await mediator.DispatchAsync(query);
