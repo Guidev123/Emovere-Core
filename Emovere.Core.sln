@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emovere.Infrastructure", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emovere.Communication", "src\Emovere.Communication\Emovere.Communication.csproj", "{B7C2C6EF-740A-D29C-3EA4-1543BEE5C5ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emovere.WebApi", "src\Emovere.WebApi\Emovere.WebApi.csproj", "{A0AF1958-A5C3-437C-9E6E-AA197F57C793}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B7C2C6EF-740A-D29C-3EA4-1543BEE5C5ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7C2C6EF-740A-D29C-3EA4-1543BEE5C5ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7C2C6EF-740A-D29C-3EA4-1543BEE5C5ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0AF1958-A5C3-437C-9E6E-AA197F57C793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0AF1958-A5C3-437C-9E6E-AA197F57C793}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0AF1958-A5C3-437C-9E6E-AA197F57C793}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0AF1958-A5C3-437C-9E6E-AA197F57C793}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
