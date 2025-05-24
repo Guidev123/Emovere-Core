@@ -2,5 +2,15 @@
 
 namespace Emovere.Communication.IntegrationEvents
 {
-    public record DeletedUserIntegrationEvent(Guid UserId) : IntegrationEvent;
+    public record DeletedUserIntegrationEvent : IntegrationEvent
+    {
+        public Guid UserId { get; }
+
+        public DeletedUserIntegrationEvent(Guid userId)
+        {
+            UserId = userId;
+            AggregateId = userId;
+            CorrelationId = Guid.NewGuid();
+        }
+    }
 }
